@@ -24,3 +24,4 @@ def decrypt_vigenere(ciphertext, keyword):
         else:
             plaintext += ciphertext[i]
     return plaintext
+    
