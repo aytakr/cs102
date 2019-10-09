@@ -1,17 +1,6 @@
 import random
-#g
 
 def is_prime(n):
-    """
-    Tests to see if a number is prime.
-
-    >>> is_prime(2)
-    True
-    >>> is_prime(11)
-    True
-    >>> is_prime(8)
-    False
-    """
     k = 0
     for i in range (1, n):
         if n % i == 0:
@@ -20,20 +9,16 @@ def is_prime(n):
         return True
     else:
         return False
-
     pass
 
 
 def gcd(a, b):
-    """
-    Euclid's algorithm for determining the greatest common divisor.
-
-    >>> gcd(12, 15)
-    3
-    >>> gcd(3, 7)
-    1
-    """
-    # PUT YOUR CODE HERE
+    while a != b:
+    if a > b:
+        a = a - b
+    else:
+        b = b - a
+    return a
     pass
 
 
