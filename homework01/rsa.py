@@ -23,14 +23,18 @@ def gcd(a, b):
 
 
 def multiplicative_inverse(e, phi):
-    """
-    Euclid's extended algorithm for finding the multiplicative
-    inverse of two numbers.
+    a, b = max(e, phi), min(e, max)
+    adivb = []
+    while b != 0:
+        adivb.append(a // b)
+        a, b = b, a % b
+    x, y = 0, 1
+    k = 0
+    for i in range (len(adivb)-2, -1, -1):
+        x, y = y, x - y * adivb[i]
+    d = y % phi
+    return d    
 
-    >>> multiplicative_inverse(7, 40)
-    23
-    """
-    # PUT YOUR CODE HERE
     pass
 
 
@@ -40,11 +44,9 @@ def generate_keypair(p, q):
     elif p == q:
         raise ValueError('p and q cannot be equal')
 
-    # n = pq
-    # PUT YOUR CODE HERE
+    n = p * q
 
-    # phi = (p-1)(q-1)
-    # PUT YOUR CODE HERE
+    phi = (p - 1)*(q - 1)
 
     # Choose an integer e such that e and phi(n) are coprime
     e = random.randrange(1, phi)
