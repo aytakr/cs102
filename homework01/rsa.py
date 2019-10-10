@@ -1,43 +1,40 @@
 import random
 
-
 def is_prime(n):
-    """
-    Tests to see if a number is prime.
-
-    >>> is_prime(2)
-    True
-    >>> is_prime(11)
-    True
-    >>> is_prime(8)
-    False
-    """
-    # PUT YOUR CODE HERE
+    k = 0
+    for i in range (1, n):
+        if n % i == 0:
+            k += 1
+    if k == 1:
+        return True
+    else:
+        return False
     pass
 
 
 def gcd(a, b):
-    """
-    Euclid's algorithm for determining the greatest common divisor.
-
-    >>> gcd(12, 15)
-    3
-    >>> gcd(3, 7)
-    1
-    """
-    # PUT YOUR CODE HERE
+    while a != b:
+    if a > b:
+        a = a - b
+    else:
+        b = b - a
+    return a
     pass
 
 
 def multiplicative_inverse(e, phi):
-    """
-    Euclid's extended algorithm for finding the multiplicative
-    inverse of two numbers.
+    a, b = max(e, phi), min(e, max)
+    adivb = []
+    while b != 0:
+        adivb.append(a // b)
+        a, b = b, a % b
+    x, y = 0, 1
+    k = 0
+    for i in range (len(adivb)-2, -1, -1):
+        x, y = y, x - y * adivb[i]
+    d = y % phi
+    return d    
 
-    >>> multiplicative_inverse(7, 40)
-    23
-    """
-    # PUT YOUR CODE HERE
     pass
 
 
@@ -47,11 +44,9 @@ def generate_keypair(p, q):
     elif p == q:
         raise ValueError('p and q cannot be equal')
 
-    # n = pq
-    # PUT YOUR CODE HERE
+    n = p * q
 
-    # phi = (p-1)(q-1)
-    # PUT YOUR CODE HERE
+    phi = (p - 1)*(q - 1)
 
     # Choose an integer e such that e and phi(n) are coprime
     e = random.randrange(1, phi)
