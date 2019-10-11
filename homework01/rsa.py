@@ -1,6 +1,15 @@
 import random
 
 def is_prime(n):
+    """
+    Tests to see if a number is prime.
+    >>> is_prime(2)
+    True
+    >>> is_prime(11)
+    True
+    >>> is_prime(8)
+    False
+    """
     k = 0
     for i in range (1, n):
         if n % i == 0:
@@ -13,6 +22,13 @@ def is_prime(n):
 
 
 def gcd(a, b):
+    """
+    Euclid's algorithm for determining the greatest common divisor.
+    >>> gcd(12, 15)
+    3
+    >>> gcd(3, 7)
+    1
+    """
     while a != b:
         if a > b:
             a = a - b
@@ -23,6 +39,12 @@ def gcd(a, b):
 
 
 def multiplicative_inverse(e, phi):
+    """
+    Euclid's extended algorithm for finding the multiplicative
+    inverse of two numbers.
+    >>> multiplicative_inverse(7, 40)
+    23
+    """
     a, b = max(e, phi), min(e, phi)
     a_div_b = []
     while b != 0:
