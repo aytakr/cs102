@@ -21,6 +21,7 @@ def encrypt_caesar(plaintext):
             ciphertext += plaintext[i]
     return ciphertext
 
+
 def decrypt_caesar(ciphertext):
     """
     >>> decrypt_caesar("SBWKRQ")
