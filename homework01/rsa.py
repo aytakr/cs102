@@ -23,18 +23,17 @@ def gcd(a, b):
 
 
 def multiplicative_inverse(e, phi):
-    a, b = max(e, phi), min(e, max)
-    adivb = []
+    a, b = max(e, phi), min(e, phi)
+    a_div_b = []
     while b != 0:
-        adivb.append(a // b)
+        a_div_b.append(a // b)
         a, b = b, a % b
     x, y = 0, 1
     k = 0
-    for i in range (len(adivb)-2, -1, -1):
-        x, y = y, x - y * adivb[i]
+    for i in range (len(a_div_b) - 2, -1, -1):
+        x, y = y, x - y * a_div_b[i]
     d = y % phi
-    return d    
-
+    return d
     pass
 
 
