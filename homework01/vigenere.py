@@ -13,10 +13,12 @@ def encrypt_vigenere(plaintext, keyword):
         j = i % len(keyword)
         if ord("A") <= ord(plaintext[i]) <= ord("Z"):
             a = ord("A")
-            ciphertext += chr((ord(plaintext[i]) + ord(keyword[j]) - 2*a) % 26 + a)
+            k = ord(keyword[j])
+            ciphertext += chr((ord(plaintext[i]) + k - 2*a) % 26 + a)
         elif ord("a") <= ord(plaintext[i]) <= ord("z"):
             a = ord("a")
-            ciphertext += chr((ord(plaintext[i]) + ord(keyword[j]) - 2*a) % 26 + a)
+            k = ord(keyword[j])
+            ciphertext += chr((ord(plaintext[i]) + k) - 2*a) % 26 + a)
         else:
             ciphertext += plaintext[i]
     return ciphertext
