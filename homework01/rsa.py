@@ -1,5 +1,6 @@
 import random
 
+
 def is_prime(n):
     """
     Tests to see if a number is prime.
@@ -11,7 +12,7 @@ def is_prime(n):
     False
     """
     k = 0
-    for i in range (1, n):
+    for i in range(1, n):
         if n % i == 0:
             k += 1
     if k == 1:
@@ -52,7 +53,7 @@ def multiplicative_inverse(e, phi):
         a, b = b, a % b
     x, y = 0, 1
     k = 0
-    for i in range (len(a_div_b) - 2, -1, -1):
+    for i in range(len(a_div_b) - 2, -1, -1):
         x, y = y, x - y * a_div_b[i]
     d = y % phi
     return d
