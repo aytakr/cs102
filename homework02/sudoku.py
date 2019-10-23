@@ -35,9 +35,9 @@ def group(values: List[str], n: int) -> List[List[str]]:
         if j % n == 0 and j > 0:
             i += 1
             a.append([])
-            a[i].append(list(str(s))[j])
+            a[i].append(values[j])
         else:
-            a[i].append(list(str(s))[j])
+            a[i].append(values[j])
     return (a)
     pass
 
