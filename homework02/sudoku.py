@@ -28,7 +28,17 @@ def group(values: List[str], n: int) -> List[List[str]]:
     >>> group([1,2,3,4,5,6,7,8,9], 3)
     [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     """
-    
+    a = []
+    i = 0
+    a.append([])
+    for j in range (n*n):
+        if j % n == 0 and j > 0:
+            i += 1
+            a.append([])
+            a[i].append(list(str(s))[j])
+        else:
+            a[i].append(list(str(s))[j])
+    return (a)
     pass
 
 
