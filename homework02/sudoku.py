@@ -91,7 +91,7 @@ def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     for i in range ((row // 3)*3, (row // 3)*3 + 3):
         for j in range ((col // 3)*3, (col // 3)*3 + 3):
             a.append(grid[i][j])
-    return (a)        
+    return (a)
     pass
 
 
@@ -105,6 +105,11 @@ def find_empty_positions(grid: List[List[str]]) -> Optional[Tuple[int, int]]:
     >>> find_empty_positions([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']])
     (2, 0)
     """
+    for i in range (len(grid)):
+        for j in range (len(grid)):
+            if (grid[i][j] == '.'):
+                return (i, j)
+                break
     pass
 
 
