@@ -86,6 +86,12 @@ def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     >>> get_block(grid, (8, 8))
     ['2', '8', '.', '.', '.', '5', '.', '7', '9']
     """
+    row, col = pos
+    a = []
+    for i in range ((row // 3)*3, (row // 3)*3 + 3):
+        for j in range ((col // 3)*3, (col // 3)*3 + 3):
+            a.append(grid[i][j])
+    return (a)        
     pass
 
 
