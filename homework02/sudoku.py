@@ -39,7 +39,7 @@ def group(values: List[str], n: int) -> List[List[str]]:
         else:
             a[i].append(values[j])
     return (a)
-    #pass
+    pass
 
 
 def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
@@ -52,6 +52,8 @@ def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     >>> get_row([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (2, 0))
     ['.', '8', '9']
     """
+    row, col = pos
+    return (grid[row])
     pass
 
 
