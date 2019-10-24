@@ -124,6 +124,10 @@ def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str
     >>> values == {'2', '5', '9'}
     True
     """
+    values_row = set(get_row(grid, pos))
+    values_col = set(get_col(grid, pos))
+    values_block = set(get_block(grid, pos))
+    return set('123456789') - (values_row + values_col + values_block)
     pass
 
 
