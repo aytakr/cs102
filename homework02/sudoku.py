@@ -127,7 +127,7 @@ def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str
     values_row = set(get_row(grid, pos))
     values_col = set(get_col(grid, pos))
     values_block = set(get_block(grid, pos))
-    return set('123456789') - (values_row + values_col + values_block)
+    return set('123456789') - values_row - values_col - values_block
     pass
 
 
@@ -144,8 +144,18 @@ def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
     >>> solve(grid)
     [['5', '3', '4', '6', '7', '8', '9', '1', '2'], ['6', '7', '2', '1', '9', '5', '3', '4', '8'], ['1', '9', '8', '3', '4', '2', '5', '6', '7'], ['8', '5', '9', '7', '6', '1', '4', '2', '3'], ['4', '2', '6', '8', '5', '3', '7', '9', '1'], ['7', '1', '3', '9', '2', '4', '8', '5', '6'], ['9', '6', '1', '5', '3', '7', '2', '8', '4'], ['2', '8', '7', '4', '1', '9', '6', '3', '5'], ['3', '4', '5', '2', '8', '6', '1', '7', '9']]
     """
+    k = 0;
+    pos = find_empty_positions(grid)
+    values = find_possible_values(grid, pos)
+    row, col = pos
 
-    pass
+    if len(values) == 0:
+        return grid
+    else:
+        for el in values:
+            grid[row][col] = el
+            solve(grid)
+    grid[row][col] = '.'
 
 
 def check_solution(solution: List[List[str]]) -> bool:
