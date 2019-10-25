@@ -109,8 +109,6 @@ def find_empty_positions(grid: List[List[str]]) -> Optional[Tuple[int, int]]:
         for j in range (len(grid)):
             if (grid[i][j] == '.'):
                 return (i, j)
-                break
-    pass
 
 
 def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str]:
@@ -144,19 +142,25 @@ def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
     >>> solve(grid)
     [['5', '3', '4', '6', '7', '8', '9', '1', '2'], ['6', '7', '2', '1', '9', '5', '3', '4', '8'], ['1', '9', '8', '3', '4', '2', '5', '6', '7'], ['8', '5', '9', '7', '6', '1', '4', '2', '3'], ['4', '2', '6', '8', '5', '3', '7', '9', '1'], ['7', '1', '3', '9', '2', '4', '8', '5', '6'], ['9', '6', '1', '5', '3', '7', '2', '8', '4'], ['2', '8', '7', '4', '1', '9', '6', '3', '5'], ['3', '4', '5', '2', '8', '6', '1', '7', '9']]
     """
-    k = 0;
     pos = find_empty_positions(grid)
-    values = find_possible_values(grid, pos)
-    row, col = pos
 
-    if len(values) == 0:
-        return grid
+    if not pos is None:
+        values = find_possible_values(grid, pos)
+        row, col = pos
+
+        if len(values) == 0:
+            grid[row][col] = '.'
+        else:
+            for el in values:
+                grid[row][col] = el
+                solution = solve(grid)
+
+                if solution is None:
+                    grid[row][col] = '.'
+                else:
+                    return grid
     else:
-        for el in values:
-            grid[row][col] = el
-            solve(grid)
-    grid[row][col] = '.'
-
+        return grid
 
 def check_solution(solution: List[List[str]]) -> bool:
     """ Если решение solution верно, то вернуть True, в противном случае False """
@@ -186,7 +190,16 @@ def generate_sudoku(N: int) -> List[List[str]]:
     >>> check_solution(solution)
     True
     """
-    pass
+    import random
+    grid = solve([['.' for _ in range(9)] for _ in range(9)])
+    n = 0
+    while n < 81 - N:
+        row = random.randint(0,8)
+        col = random.randint(0,8)
+        if grid[row][col] != '.':
+            grid[row][col] = '.'
+            n += 1
+    return grid
 
 
 if __name__ == '__main__':
