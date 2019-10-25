@@ -223,8 +223,7 @@ if __name__ == '__main__':
             print(f"Puzzle {fname} can't be solved")
         else:
             display(solution)
-        if check_solution(solution) == True:
+        if check_solution(solution) is True:
             print('Solution is correct')
         else:
             print('Ooops')
-    
