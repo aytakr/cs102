@@ -1,98 +1,159 @@
-import pygame
-from pygame.locals import *
+import pathlib
 import random
+
+
+from typing import List, Optional, Tuple
+from copy import deepcopy
+
+Cell = Tuple[int, int]
+Cells = List[int]
+Grid = List[Cells]
 
 
 class GameOfLife:
 
-    def __init__(self, width=640, height=480, cell_size=10, speed=10):
-        self.width = width
-        self.height = height
-        self.cell_size = cell_size
+    def __init__(
+        self,
+        size: Tuple[int, int],
+        randomize: bool=True,
+        max_generations: Optional[float]=float('inf')
+    ) -> None:
+        # Размер клеточного поля
+        self.rows, self.cols = size
+        # Предыдущее поколение клеток
+        self.prev_generation = self.create_grid()
+        # Текущее поколение клеток
+        self.curr_generation = self.create_grid(randomize=randomize)
+        # Максимальное число поколений
+        self.max_generations = max_generations
+        # Текущее число поколений
+        self.generations = 1
 
-        # Устанавливаем размер окна
-        self.screen_size = width, height
-        # Создание нового окна
-        self.screen = pygame.display.set_mode(self.screen_size)
+    def create_grid(self, randomize: bool=False) -> Grid:
+        if randomize == True:
+            self.clist = []
+            for i in range(self.rows):
+                self.clist.append([])
+                for j in range(self.cols):
+                    self.clist[i].append(random.randint(0, 1))
+        else:
+            self.clist = []
+            for i in range(self.rows):
+                self.clist.append([])
+                for j in range(self.cols):
+                    self.clist[i].append(0)
 
-        # Вычисляем количество ячеек по вертикали и горизонтали
-        self.cell_width = self.width // self.cell_size
-        self.cell_height = self.height // self.cell_size
-
-        # Скорость протекания игры
-        self.speed = speed
-
-    def draw_grid(self):
-        """ Отрисовать сетку """
-        for x in range(0, self.width, self.cell_size):
-            pygame.draw.line(self.screen, pygame.Color('black'),
-                    (x, 0), (x, self.height))
-        for y in range(0, self.height, self.cell_size):
-            pygame.draw.line(self.screen, pygame.Color('black'),
-                    (0, y), (self.width, y))
-
-    def run(self):
-        """ Запустить игру """
-        pygame.init()
-        clock = pygame.time.Clock()
-        pygame.display.set_caption('Game of Life')
-        self.screen.fill(pygame.Color('white'))
-
-        # Создание списка клеток
-        # PUT YOUR CODE HERE
-
-        running = True
-        while running:
-            for event in pygame.event.get():
-                if event.type == QUIT:
-                    running = False
-            self.draw_grid()
-
-            # Отрисовка списка клеток
-            # Выполнение одного шага игры (обновление состояния ячеек)
-            # PUT YOUR CODE HERE
-
-            pygame.display.flip()
-            clock.tick(self.speed)
-        pygame.quit()
-
-    def cell_list(self, randomize=True):
-        """ Создание списка клеток.
-
-        :param randomize: Если True, то создается список клеток, где
-        каждая клетка равновероятно может быть живой (1) или мертвой (0).
-        :return: Список клеток, представленный в виде матрицы
-        """
-        self.clist = []
-        # PUT YOUR CODE HERE
         return self.clist
 
-    def draw_cell_list(self, clist):
-        """ Отображение списка клеток
 
-        :param rects: Список клеток для отрисовки, представленный в виде матрицы
-        """
-        pass
 
-    def get_neighbours(self, cell):
-        """ Вернуть список соседей для указанной ячейки
-
-        :param cell: Позиция ячейки в сетке, задается кортежем вида (row, col)
-        :return: Одномерный список ячеек, смежных к ячейке cell
-        """
+    def get_neighbours(self, cell: Cell) -> Cells:
+        # Copy from previous assignment
+        cell_row, cell_col = cell
         neighbours = []
-        # PUT YOUR CODE HERE
+
+        if cell_row == 0:
+            r, k = 0, 2
+        elif cell_row == self.rows - 1:
+            r, k = -1, 1
+        else:
+            r, k = -1, 2
+
+        if cell_col == 0:
+            c, t = 0, 2
+        elif cell_col == self.cols - 1:
+            c, t = -1, 1
+        else:
+            c, t = -1, 2
+
+        for i in range(cell_row + r, cell_row + k):
+            for j in range(cell_col + c, cell_col + t):
+                if i == cell_row and j == cell_col:
+                    pass
+                else:
+                    neighbours.append((i, j))
         return neighbours
 
-    def update_cell_list(self, cell_list):
-        """ Выполнить один шаг игры.
 
-        Обновление всех ячеек происходит одновременно. Функция возвращает
-        новое игровое поле.
+    def get_next_generation(self) -> Grid:
+        # Copy from previous assignment
+        count = 0
+        newgrid = []
 
-        :param cell_list: Игровое поле, представленное в виде матрицы
-        :return: Обновленное игровое поле
+        for i in range(self.rows):
+            newgrid.append([])
+            for j in range(self.cols):
+                neighbours = self.get_neighbours((i, j))
+
+                for k in range (len(neighbours)):
+                    cell_row, cell_col = neighbours[k]
+                    if self.curr_generation[cell_row][cell_col] == 1:
+                        count += 1
+
+                if (count == 2 or count == 3) and self.curr_generation[i][j] == 1:
+                    newgrid[i].append(1)
+                elif count == 3 and self.curr_generation[i][j] == 0:
+                    newgrid[i].append(1)
+                else:
+                    newgrid[i].append(0)
+
+                count = 0
+
+        return newgrid
+
+
+    def step(self) -> None:
         """
-        new_clist = []
-        # PUT YOUR CODE HERE
-        return self.clist
+        Выполнить один шаг игры.
+        """
+        self.prev_generation = deepcopy(self.curr_generation)
+        self.curr_generation = deepcopy(self.get_next_generation())
+
+        self.generations += 1
+        print (self.generations)
+
+
+    @property
+    def is_max_generations_exceeded(self) -> bool:
+        """
+        Не превысило ли текущее число поколений максимально допустимое.
+        """
+        return self.generations < self.max_generations
+
+
+    @property
+    def is_changing(self) -> bool:
+        """
+        Изменилось ли состояние клеток с предыдущего шага.
+        """
+        return self.curr_generation != self.prev_generation
+
+
+    @staticmethod
+    def from_file(filename: pathlib.Path) -> 'GameOfLife':
+        """
+        Прочитать состояние клеток из указанного файла.
+        """
+        grid = []
+
+        for line in open(filename).read().split("\n"):
+            #print (list(line))
+            if len(line) != 0:
+                grid.append(list(line))
+
+        life = GameOfLife((len(grid), len(grid[0])))
+        life.curr_generation = grid
+
+        return life
+
+    def save(self, filename: pathlib.Path) -> None:
+        """
+        Сохранить текущее состояние клеток в указанный файл.
+        """
+        file = open(filename,'w')
+        for line in range(self.rows):
+            file.write(''.join(self.curr_generation[line]))
+            file.write("\n")
+        file.close()
+
+        pass
