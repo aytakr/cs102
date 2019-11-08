@@ -9,11 +9,8 @@ class Console(UI):
     def __init__(self, life: GameOfLife) -> None:
         super().__init__(life)
 
-
     def draw_borders(self, screen) -> None:
         """ Отобразить рамку. """
-        #win = curses.newwin(self.height, self.width, 0,0)
-        #pad = curses.newpad(screen)
         for i in range(life.rows):
             screen.addstr(i + 1, 0, '|')
             screen.addstr(i + 1, life.cols + 1, '|')
@@ -26,8 +23,6 @@ class Console(UI):
         screen.addstr(life.rows + 1, 0, '+')
         screen.addstr(0, life.cols + 1, '+')
         screen.addstr(life.rows + 1, life.cols + 1, '+')
-
-
 
     def draw_grid(self, screen) -> None:
         """ Отобразить состояние клеток. """
