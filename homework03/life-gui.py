@@ -7,7 +7,7 @@ from ui import UI
 
 class GUI(UI):
 
-    def __init__(self, life: GameOfLife, cell_size: int=10, speed: int=10) -> None:
+    def __init__(self, life: GameOfLife, cell_size: int=10, speed: int=2) -> None:
         super().__init__(life)
         self.height = 480
         self.width = 480
@@ -43,6 +43,7 @@ class GUI(UI):
     def run(self) -> None:
         # Copy from previous assignment
         """ Запустить игру """
+        count = 0
         pygame.init()
         clock = pygame.time.Clock()
         pygame.display.set_caption('Game of Life')
@@ -60,17 +61,15 @@ class GUI(UI):
             # Отрисовка списка клеток
             # Выполнение одного шага игры (обновление состояния ячеек)
             # PUT YOUR CODE HERE
+            while count < life.max_generations:
+                life.step()
+                self.draw_grid()
+                self.draw_lines()
 
-            life.step()
-            self.draw_grid()
-            self.draw_lines()
+                pygame.display.flip()
+                clock.tick(self.speed)
+                count += 1
 
-            print(life.prev_generation)
-            print(life.curr_generation)
-
-            pygame.display.flip()
-            clock.tick(self.speed)
-            
         pygame.quit()
 
         pass

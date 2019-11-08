@@ -110,7 +110,6 @@ class GameOfLife:
         self.curr_generation = deepcopy(self.get_next_generation())
 
         self.generations += 1
-        print (self.generations)
 
 
     @property
