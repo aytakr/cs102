@@ -4,7 +4,7 @@ from pygame.locals import *
 from life import GameOfLife
 from ui import UI
 
-
+pause = 0
 class GUI(UI):
 
     def __init__(self, life: GameOfLife, cell_size: int=10, speed: int=2) -> None:
@@ -43,7 +43,6 @@ class GUI(UI):
     def run(self) -> None:
         # Copy from previous assignment
         """ Запустить игру """
-        count = 0
         pygame.init()
         clock = pygame.time.Clock()
         pygame.display.set_caption('Game of Life')
@@ -54,22 +53,30 @@ class GUI(UI):
         self.draw_grid()
         running = True
         while running:
-            for event in pygame.event.get():
-                if event.type == QUIT:
-                    running = False
-
             # Отрисовка списка клеток
             # Выполнение одного шага игры (обновление состояния ячеек)
             # PUT YOUR CODE HERE
-            while count < life.max_generations:
-                life.step()
+            while life.is_changing and life.is_max_generations_exceeded and running:
+                for event in pygame.event.get():
+                    if event.type == QUIT:
+                        running = False
+                        break
+                    if event.type==KEYDOWN:
+                        if event.key==K_SPACE:
+                            life.pause = not life.pause
+                    if event.type == MOUSEBUTTONDOWN:
+                        pos_row, pos_col = pygame.mouse.get_pos()
+                        row = pos_row // self.cell_size
+                        col = pos_col // self.cell_size
+                        life.curr_generation[row][col] = 1 - life.curr_generation[row][col]
+                if not life.pause:
+                    life.step()
+
                 self.draw_grid()
                 self.draw_lines()
 
                 pygame.display.flip()
                 clock.tick(self.speed)
-                count += 1
 
-        pygame.quit()
-
-        pass
+            pygame.quit()
+            exit()

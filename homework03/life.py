@@ -29,6 +29,8 @@ class GameOfLife:
         # Текущее число поколений
         self.generations = 1
 
+        self.pause = False
+
     def create_grid(self, randomize: bool=False) -> Grid:
         if randomize == True:
             self.clist = []
@@ -117,7 +119,7 @@ class GameOfLife:
         """
         Не превысило ли текущее число поколений максимально допустимое.
         """
-        return self.generations < self.max_generations
+        return self.generations <= self.max_generations
 
 
     @property
