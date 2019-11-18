@@ -11,7 +11,7 @@ class GUI(UI):
         self,
         life: GameOfLife,
         cell_size: int = 10,
-        speed: int = 2
+        speed: int = 5
     ) -> None:
         super().__init__(life)
         self.height = 480
