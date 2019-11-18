@@ -4,7 +4,7 @@ import time
 import config
 
 
-def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3):
+def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3, group: str = '', week: str = ''):
     """ Выполнить GET-запрос
 
     :param url: адрес, на который необходимо выполнить запрос
@@ -13,7 +13,12 @@ def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3):
     :param max_retries: максимальное число повторных запросов
     :param backoff_factor: коэффициент экспоненциального нарастания задержки
     """
-    # PUT YOUR CODE HERE
+    if week:
+        week = str(week) + '/'
+    url = f'http://www.ifmo.ru/ru/schedule/0/{group}/{week}raspisanie_zanyatiy_{group}.htm'
+    response = requests.get(url)
+    web_page = response.text
+    return web_page
 
 
 def get_friends(user_id, fields):
