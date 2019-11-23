@@ -5,7 +5,7 @@ import datetime
 from bs4 import BeautifulSoup
 
 
-telebot.apihelper.proxy = {'https': 'socks5h://194.190.170.38:82'}
+telebot.apihelper.proxy = {'https': 'socks5h://91.221.70.248:9100'}
 bot = telebot.TeleBot(config.access_token)
 
 days = ['monday', 'tuesday', 'wednesday', 'thursday',
@@ -24,11 +24,11 @@ def get_page(group, week=''):
     return web_page
 
 
-def parse_schedule_for_a_weekday(web_page, weekday):
+def parse_schedule_for_a_weekday(web_page, weekday, week):
     soup = BeautifulSoup(web_page, "html5lib")
     index = days.index(weekday) + 1
     # Получаем таблицу с расписанием на понедельник
-    if soup.find("table", attrs={"id": str(index) + "day"}):
+    if soup.find("table", attrs={"id": str(index) + "day"}) is not None:
         schedule_table = soup.find("table", attrs={"id": str(index) + "day"})
 
         # Время проведения занятий
@@ -58,24 +58,34 @@ def parse_schedule_for_a_weekday(web_page, weekday):
 def get_schedule(message, near=False, repeat=0, day=0):
     """ Получить расписание на указанный день """
     if len(message.text.split()) == 2:
-        week = '0'
+        week = (datetime.datetime.today().isocalendar()[1] + 1) % 2 + 1
         weekday, group = message.text.split()
     else:
         weekday, week, group = message.text.split()
     weekday = weekday.replace('/', '')
 
     if weekday == 'near':
-        weekday = days[datetime.datetime.today().weekday() + repeat]
+        if datetime.datetime.today().weekday() == 5:
+            weekday = 'monday'
+            week = (datetime.datetime.today().isocalendar()[1] + 1) % 2
+        else:
+            weekday = days[datetime.datetime.today().weekday() + repeat]
+            week = (datetime.datetime.today().isocalendar()[1] + 1) % 2 + 1
 
     if weekday == 'tomorrow':
-        weekday = days[datetime.datetime.today().weekday() + 1]
+        if datetime.datetime.today().weekday() == 5:
+            weekday = 'monday'
+            week = (datetime.datetime.today().isocalendar()[1] + 1) % 2
+        else:
+            weekday = days[datetime.datetime.today().weekday() + 1]
+            week = (datetime.datetime.today().isocalendar()[1] + 1) % 2 + 1
 
     if weekday == 'all':
         weekday = days[day]
 
     web_page = get_page(group, week)
     times_lst, locations_lst, classroom_lst, lessons_lst = \
-        parse_schedule_for_a_weekday(web_page, weekday)
+        parse_schedule_for_a_weekday(web_page, weekday, week)
 
     if near:
         if repeat:
@@ -104,7 +114,7 @@ def get_schedule(message, near=False, repeat=0, day=0):
             get_schedule(message, near=True, repeat=1)
     else:
         if times_lst is None:
-            bot.send_message(message.chat.id, "Выходной\n")
+            bot.send_message(message.chat.id, "Выходной!\n")
         else:
             resp = ''
             for time, location, classroom, lession in \
