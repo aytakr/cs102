@@ -5,7 +5,7 @@ import datetime
 from bs4 import BeautifulSoup
 
 
-telebot.apihelper.proxy = {'https': 'socks5h://91.221.70.248:9100'}
+telebot.apihelper.proxy = {'https': 'socks5h://194.190.170.38:82'}
 bot = telebot.TeleBot(config.access_token)
 
 days = ['monday', 'tuesday', 'wednesday', 'thursday',
