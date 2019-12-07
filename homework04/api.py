@@ -26,7 +26,16 @@ def get_friends(user_id, fields):
     assert isinstance(fields, str), "fields must be string"
     assert user_id > 0, "user_id must be positive integer"
     # PUT YOUR CODE HERE
+    query = "{domain}/friends.get?access_token={access_token}&user_id={user_id}&fields={fields}&v={v}".format(
+        domain=config.VK_CONFIG['domain'],
+        access_token=config.VK_CONFIG['access_token'],
+        user_id=user_id,
+        fields=fields,
+        v=config.VK_CONFIG['version'])
 
+    response = requests.get(query)
+
+    return response
 
 def messages_get_history(user_id, offset=0, count=20):
     """ Получить историю переписки с указанным пользователем
