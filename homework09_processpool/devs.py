@@ -1,6 +1,6 @@
 import random
 
-from test import ProcessPool
+from ProcessPool import ProcessPool
 
 def generate_matrix(size, N):
     arrays = []
